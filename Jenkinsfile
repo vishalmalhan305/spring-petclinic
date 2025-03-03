@@ -27,10 +27,11 @@ pipeline {
             steps {
                 bat 'mvn test'
             }
-            post {
-                always {
-                    jacoco(execPattern: '**/target/site/jacoco/jacoco.xml')
-                }
+        }
+
+        stage('Code Coverage Report') {
+            steps {
+                jacoco execPattern: '**/target/jacoco.exec'
             }
         }
 
@@ -39,9 +40,14 @@ pipeline {
                 archiveArtifacts artifacts: '**/target/*.jar', fingerprint: true
             }
         }
-    } // **Make sure this closing brace is correctly placed**
+    }
 
     post {
+        always {
+            junit '**/target/surefire-reports/*.xml'
+            archiveArtifacts artifacts: '**/target/jacoco.exec', fingerprint: true
+        }
+
         success {
             echo "Pipeline executed successfully!"
         }
