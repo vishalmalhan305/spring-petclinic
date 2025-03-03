@@ -10,12 +10,12 @@ pipeline {
         PATH = "${MAVEN_HOME}\\bin;${env.PATH}"
     }
 
-    stages {
-        stage('Checkout') {
-            steps {
-                git 'https://github.com/vishalmalhan305/spring-petclinic.git'
-            }
-        }
+   stage('Checkout') {
+    steps {
+        git branch: 'main', url: 'https://github.com/vishalmalhan305/spring-petclinic.git'
+    }
+}
+
 
         stage('Build') {
             steps {
