@@ -5,27 +5,27 @@ pipeline {
         cron('H/3 * * * 1') // Runs every 3 minutes on Monday
     }
 
-     environment {
-        MAVEN_HOME = "C:\\maven" // Windows Maven Path
+    environment {
+        MAVEN_HOME = "C:\\maven"
         PATH = "${MAVEN_HOME}\\bin;${env.PATH}"
     }
 
-   stage('Checkout') {
-    steps {
-        git branch: 'main', url: 'https://github.com/vishalmalhan305/spring-petclinic.git'
-    }
-}
-
+    stages {
+        stage('Checkout') {
+            steps {
+                git branch: 'main', url: 'https://github.com/vishalmalhan305/spring-petclinic.git'
+            }
+        }
 
         stage('Build') {
             steps {
-                sh 'mvn clean package'
+                bat 'mvn clean package'
             }
         }
 
         stage('Test & Coverage') {
             steps {
-                sh 'mvn test'
+                bat 'mvn test'
             }
             post {
                 always {
@@ -39,7 +39,7 @@ pipeline {
                 archiveArtifacts artifacts: '**/target/*.jar', fingerprint: true
             }
         }
-    }
+    } // **Make sure this closing brace is correctly placed**
 
     post {
         success {
